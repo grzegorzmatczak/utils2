@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 project(utils2  VERSION 0.0  DESCRIPTION "utils2 Windows/Linux"  LANGUAGES C CXX)
 
 set(DEFAULT_BUILD_TYPE "Release")
-set(CMAKE_BUILD_TYPE "Release")
+#set(CMAKE_BUILD_TYPE "Release")
 set(TARGET_NAME "utils2")
 
 set(CMAKE_CXX_STANDARD 17)
@@ -61,39 +61,31 @@ find_package(Qt5OpenGL)
 enable_testing()
 
 set(SRC_LOGGING
-  src/logger.cpp)
+src/logger.cpp
+src/mainlogger.cpp)
+
 
 set(HEADERS_LOGGING
-	include/logger.hpp)
+include/logger.hpp
+include/mainlogger.hpp)
 
 set(SRC_HEADERS_TEST
 	gtest/gtest.cpp
-	gtest/gtest_logger.cpp
-	gtest/gtest_logger.hpp)
+    gtest/gtest_logger.cpp
+	gtest/gtest_logger.hpp
+	gtest/gtest_mainlogger.cpp
+	gtest/gtest_mainlogger.hpp)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-
-#add_library(test SHARED src/test.cpp)
-#add_library(${PROJECT_NAME}_lib STATIC
-#	${SRC_LOGGING} ${HEADERS_LOGGING})
-
 add_library(${PROJECT_NAME}_lib STATIC
 	${SRC_LOGGING} ${HEADERS_LOGGING})
-
-#target_include_directories(${PROJECT_NAME}_lib PRIVATE include)
-#target_include_directories(${PROJECT_NAME}_lib PRIVATE src)
 
 add_executable(g_test ${SRC_HEADERS_TEST})
 
 target_link_libraries(${PROJECT_NAME}_lib Qt5::Core Threads::Threads)
 
 target_link_libraries(g_test ${PROJECT_NAME}_lib GTest::GTest gmock)
-
-#target_include_directories(${PROJECT_NAME} PUBLIC
-#    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-##    $<INSTALL_INTERFACE:include>
-#    PRIVATE src)
 
 install(TARGETS ${PROJECT_NAME}_lib
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

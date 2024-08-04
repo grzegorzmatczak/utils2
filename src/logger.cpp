@@ -1,45 +1,57 @@
 #include "logger.hpp"
 
-#include <QtGlobal>
-
-#include <QDateTime>
-#include <QByteArray>
-#include <QFile>
 
 #include <stdio.h>
 #include <stdlib.h>
 
-QString Logger::mFileName;
-QString Logger::mFileNameDebug;
+Logger::Logger()
+{}
 
-void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+Logger::Logger(LogType type)
+: mType(type)
+{}
+
+Logger::Logger(LogLevel level)
+: mLevel(level)
+{}
+
+Logger::Logger(LogType type, LogLevel level)
+: mType(type), mLevel(level)
+{}
+
+void Logger::print(QString& msg)
 {
-    QTime time = QTime::currentTime();
-    QString formattedTime = time.toString("hh:mm:ss.zzz");
-    QByteArray formattedTimeMsg = formattedTime.toLocal8Bit();
-
-    QByteArray msgData = formattedTimeMsg + (" " + msg + "\r\n").toStdString().c_str();
-    if(!Logger::mFileName.isEmpty())
-    {
-        QFile file(Logger::mFileName);
-        if(file.open(QIODevice::Append| QIODevice::WriteOnly))
-        {
-            file.write(msgData.constData(), msgData.length());
-        }
-        file.close();
-    }
-
-    #ifdef _WIN32
-    fprintf(stderr, "%s", msgData.constData());
-    fflush(stderr);
-    #else   
-    //linux
-    #endif
+    print(msg, mType, mLevel);
 }
 
-void Logger::start(QString& fileName, QString& fileNameDebug)
+void Logger::print(QString& msg, LogType type)
 {
-    Logger::mFileName = fileName;
-    Logger::mFileNameDebug = fileNameDebug;
-    qInstallMessageHandler(myMessageOutput); // Install the handler
+    print(msg, type, mLevel);
+}
+
+void Logger::print(QString& msg, LogLevel level)
+{
+    print(msg, mType, level);
+}
+
+void Logger::print(QString& msg, LogType type, LogLevel level)
+{
+    if(level <= mLevel)
+        qDebug("[%s] %s", qPrintable(fromType(type)), qPrintable(msg));
+}
+
+QString Logger::fromType(LogType type)
+{
+    switch (type)
+    {
+        case LogType::VIEW :
+            return "view";
+        case LogType::SCENE :
+            return "scene";
+        case LogType::PAINTER :
+            return "painter";
+        
+        default:
+            break;
+    }
 }
