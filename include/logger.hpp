@@ -6,6 +6,7 @@ enum LogType
 {
 	VIEW,
 	SCENE,
+	CONFIG,
 	PAINTER
 };
 
@@ -17,18 +18,34 @@ enum LogLevel
 	LOW = 3
 };
 
+enum LogFunction
+{
+	YES,
+	NO
+};
+
 class Logger
 {
 	public:
 		Logger();
-		Logger(LogType type);
-		Logger(LogLevel level);
-		Logger(LogType type, LogLevel level);
+		Logger(LogType type, LogLevel level, LogFunction logFunction);
 
-		void print(QString& msg);
-		void print(QString& msg, LogLevel level);
-		void print(QString& msg, LogType type);
-		void print(QString& msg, LogType type, LogLevel level);
+		void print(const QString& msg);
+		void print(const QString& msg, LogLevel level);
+		void print(const QString& msg, LogType type);
+		void print(const QString& msg, const QString& functionStr);
+		void print(const QString& msg, LogType type, LogLevel level);
+		void print(const QString& msg, LogType type, LogLevel level, const QString& functionStr);
+
+		void printError(const QString& msg);
+		void printError(const QString& msg, const QString& functionStr);
+		void printError(const QString& msg, LogType type, LogLevel level);
+		void printError(const QString& msg, LogType type, LogLevel level, const QString& functionStr);
+
+		void printStartFunction(const QString& functionStr);
+		void printStartFunction(LogType type, LogLevel level, const QString& functionStr);
+		void printEndFunction(const QString& functionStr);
+		void printEndFunction(LogType type, LogLevel level, const QString& functionStr);
 
 	private:
 		QString fromType(LogType type);
@@ -37,5 +54,6 @@ class Logger
 	private:
 		LogType mType{VIEW};
 		LogLevel mLevel{LOW};
+		LogFunction isLogFunction{NO};
 };
 

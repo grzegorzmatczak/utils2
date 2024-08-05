@@ -24,6 +24,7 @@ file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
+
 if (WIN32)
 	set(QT5_PATH  "D:\\Qt\\5.15.2\\msvc2019_64")
 	list(APPEND CMAKE_PREFIX_PATH ${QT5_PATH})
@@ -62,19 +63,34 @@ enable_testing()
 
 set(SRC_LOGGING
 src/logger.cpp
-src/mainlogger.cpp)
+src/mainlogger.cpp
+src/mainlogger.cpp
+src/configreader.cpp
+)
 
 
 set(HEADERS_LOGGING
 include/logger.hpp
-include/mainlogger.hpp)
+include/mainlogger.hpp
+include/configreader.hpp
+)
 
 set(SRC_HEADERS_TEST
 	gtest/gtest.cpp
     gtest/gtest_logger.cpp
 	gtest/gtest_logger.hpp
 	gtest/gtest_mainlogger.cpp
-	gtest/gtest_mainlogger.hpp)
+	gtest/gtest_mainlogger.hpp
+    gtest/gtest_configreader.cpp
+    gtest/gtest_configreader.hpp
+)
+
+macro(copy_json jsonname)
+	configure_file(${jsonname} Debug/${jsonname})
+	configure_file(${jsonname} Release/${jsonname})
+endmacro()
+
+copy_json(gtest/test.json)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 

@@ -2,6 +2,7 @@
 #include "gmock/gmock.h" 
 #include "gtest_logger.hpp"
 #include "gtest_mainlogger.hpp"
+#include "gtest_configreader.hpp"
 
 using ::testing::AtLeast;
 
