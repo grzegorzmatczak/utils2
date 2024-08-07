@@ -11,7 +11,6 @@ ConfigReader::~ConfigReader() {}
 
 bool ConfigReader::readConfig(const QString& configPathWithName, QJsonObject& obj) 
 {
-	mLogger->printStartFunction(__FUNCTION__);
 	mLogger->print(configPathWithName, LogType::CONFIG, LogLevel::LOW, __FUNCTION__);
 
 	QFile jConfigFile{ configPathWithName };

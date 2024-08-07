@@ -7,7 +7,8 @@ enum LogType
 	VIEW,
 	SCENE,
 	CONFIG,
-	PAINTER
+	PAINTER,
+	PAINTER_SETTINGS
 };
 
 enum LogLevel

@@ -40,7 +40,7 @@ void Logger::print(const QString& msg, LogType type, LogLevel level)
 void Logger::print(const QString& msg, LogType type, LogLevel level, const QString& functionStr)
 {
     if(isLogFunction == LogFunction::YES && level <= mLevel)
-        qDebug("[%s][%s] %s", qPrintable(fromType(type)), qPrintable(functionStr), qPrintable(msg));
+        qDebug("[%s][%s]() %s", qPrintable(fromType(type)), qPrintable(functionStr), qPrintable(msg));
     else if(level <= mLevel)
         qDebug("[%s] %s", qPrintable(fromType(type)), qPrintable(msg));
 }
