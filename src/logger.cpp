@@ -42,7 +42,7 @@ void Logger::print(const QString& msg, LogType type, LogLevel level)
 void Logger::print(const QString& msg, LogType type, LogLevel level, const QString& functionStr)
 {
     if(isLogFunction == LogFunction::YES && level <= mLevel)
-        qDebug("[%s][%s]() %s", qPrintable(fromType(type)), qPrintable(functionStr), qPrintable(msg));
+        qDebug("[%s][%s()] %s", qPrintable(fromType(type)), qPrintable(functionStr), qPrintable(msg));
     else if(level <= mLevel)
         qDebug("[%s] %s", qPrintable(fromType(type)), qPrintable(msg));
 }
@@ -66,7 +66,7 @@ void Logger::printError(const QString& msg, LogType type, LogLevel level)
 void Logger::printError(const QString& msg, LogType type, LogLevel level, const QString& functionStr)
 {
     if(isLogFunction == LogFunction::YES && level <= mLevel)
-        qDebug("[%s][%s]() ", qPrintable(fromType(type)), qPrintable(functionStr));
+        qDebug("[%s][%s()] ", qPrintable(fromType(type)), qPrintable(functionStr));
     else if(level <= mLevel)
         qDebug("[%s] ", qPrintable(fromType(type)));
 }
@@ -79,7 +79,7 @@ void Logger::printStartFunction(const QString& functionStr)
 void Logger::printStartFunction(LogType type, LogLevel level, const QString& functionStr)
 {
     if(isLogFunction == LogFunction::YES && level <= mLevel)
-        qDebug("[%s][%s]()", qPrintable(fromType(type)), qPrintable(functionStr));
+        qDebug("[%s][%s()]", qPrintable(fromType(type)), qPrintable(functionStr));
     else if(level <= mLevel)
         qDebug("[%s]", qPrintable(fromType(type)));
 }
@@ -92,7 +92,7 @@ void Logger::printEndFunction(const QString& functionStr)
 void Logger::printEndFunction(LogType type, LogLevel level, const QString& functionStr)
 {
     if(isLogFunction == LogFunction::YES && level <= mLevel)
-        qDebug("[%s][%s]() done", qPrintable(fromType(type)), qPrintable(functionStr));
+        qDebug("[%s][%s()] done", qPrintable(fromType(type)), qPrintable(functionStr));
     else if(level <= mLevel)
         qDebug("[%s] done", qPrintable(fromType(type)));
 }
@@ -107,6 +107,8 @@ QString Logger::fromType(LogType type)
             return "scene";
         case LogType::PAINTER :
             return "painter";
+        case LogType::CAMERA_CAPTURE:
+            return "CAMERA_CAPTURE";
         
         default:
             return "";
