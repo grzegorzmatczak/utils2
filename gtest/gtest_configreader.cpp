@@ -2,14 +2,12 @@
 
 #include <QDir>
 
-
-constexpr auto CONFIG{ "/gtest/test.json" };
-constexpr auto TEST_DATA{ "TestData" };
-
 using ::testing::AtLeast;
 
-
 namespace gtest_configreader {
+
+    constexpr auto CONFIG{ "/gtest/test.json" };
+    constexpr auto TEST_DATA{ "TestData" };
 
     TEST_F(GTest_configreader, test_readConfig)
     {

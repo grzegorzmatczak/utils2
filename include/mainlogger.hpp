@@ -8,7 +8,7 @@ class MainLogger
 		static void start(QString& fileName, QString& fileNameDebug);
 		friend void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 	private:
-		static QString MainLogger::mFileName;
-		static QString MainLogger::mFileNameDebug;
+		static QString mFileName;
+		static QString mFileNameDebug;
 
 };

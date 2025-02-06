@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+namespace logger
+{
 Logger::Logger()
 {}
 
@@ -69,8 +71,6 @@ void Logger::printError(const QString& msg, LogType type, LogLevel level, const 
         qDebug("[%s] ", qPrintable(fromType(type)));
 }
 
-
-
 void Logger::printStartFunction(const QString& functionStr)
 {
     printStartFunction(mType, mLevel, functionStr);
@@ -113,3 +113,5 @@ QString Logger::fromType(LogType type)
     }
     return "";
 }
+
+} // namespace logger

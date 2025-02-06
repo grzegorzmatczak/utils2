@@ -2,31 +2,34 @@
 
 #include <QString>
 
-enum LogType
+namespace logger
 {
-	VIEW,
-	SCENE,
-	CONFIG,
-	PAINTER,
-	PAINTER_SETTINGS
-};
+	enum LogType
+	{
+		VIEW,
+		SCENE,
+		CONFIG,
+		PAINTER,
+		PAINTER_SETTINGS,
+		CAMERA_CAPTURE
+	};
 
-enum LogLevel
-{
-	NO_LOGS = 0,
-	HIGH = 1,
-	MEDIUM = 2,
-	LOW = 3
-};
+	enum LogLevel
+	{
+		NO_LOGS = 0,
+		HIGH = 1,
+		MEDIUM = 2,
+		LOW = 3
+	};
 
-enum LogFunction
-{
-	YES,
-	NO
-};
+	enum LogFunction
+	{
+		YES,
+		NO
+	};
 
-class Logger
-{
+	class Logger
+	{
 	public:
 		Logger();
 		Logger(LogType type, LogLevel level, LogFunction logFunction);
@@ -53,8 +56,9 @@ class Logger
 
 
 	private:
-		LogType mType{VIEW};
-		LogLevel mLevel{LOW};
-		LogFunction isLogFunction{NO};
-};
+		LogType mType{ VIEW };
+		LogLevel mLevel{ LOW };
+		LogFunction isLogFunction{ NO };
+	};
 
+} // namespace logger

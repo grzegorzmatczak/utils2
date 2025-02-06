@@ -6,8 +6,10 @@
 #include <QFile>
 #include <QJsonDocument>
 
-class Logger;
-
+namespace logger
+{
+	class Logger;
+}
 
 class ConfigReader : public QObject
 {
@@ -18,6 +20,6 @@ class ConfigReader : public QObject
 		bool readConfig(const QString& configPathWithName, QJsonArray& obj);
 
 	private:
-		std::unique_ptr<Logger> mLogger;
+		std::unique_ptr<logger::Logger> mLogger;
 
 };

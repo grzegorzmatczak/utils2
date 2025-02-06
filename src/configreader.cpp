@@ -4,14 +4,14 @@
 
 ConfigReader::ConfigReader()
 {
-	mLogger = std::make_unique<Logger>(LogType::CONFIG, LogLevel::MEDIUM, LogFunction::YES);
+	mLogger = std::make_unique<logger::Logger>(logger::LogType::CONFIG, logger::LogLevel::MEDIUM, logger::LogFunction::YES);
 }
 
 ConfigReader::~ConfigReader() {}
 
 bool ConfigReader::readConfig(const QString& configPathWithName, QJsonObject& obj) 
 {
-	mLogger->print(configPathWithName, LogType::CONFIG, LogLevel::LOW, __FUNCTION__);
+	mLogger->print(configPathWithName, logger::LogType::CONFIG, logger::LogLevel::LOW, __FUNCTION__);
 
 	QFile jConfigFile{ configPathWithName };
 	if (!jConfigFile.open(QIODevice::ReadOnly))

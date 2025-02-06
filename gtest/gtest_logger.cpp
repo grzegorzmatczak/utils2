@@ -12,7 +12,7 @@ namespace gtest_logger
 		QString name1{"myFile.log"};
 		QString name2{"myFileD.log"};
 		MainLogger::start(name1, name2);
-		Logger logger(LogType::VIEW, LogLevel::HIGH, LogFunction::YES);
+		logger::Logger logger(LogType::VIEW, LogLevel::HIGH, LogFunction::YES);
 		logger.print(QString("test Logger"));
 		QString str = QString("test Logger");
 		logger.print(str);
