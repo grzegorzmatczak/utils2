@@ -11,7 +11,8 @@ namespace logger
 		CONFIG,
 		PAINTER,
 		PAINTER_SETTINGS,
-		CAMERA_CAPTURE
+		CAMERA_CAPTURE,
+		SERVICE
 	};
 
 	enum LogLevel
@@ -34,6 +35,8 @@ namespace logger
 		Logger();
 		Logger(LogType type, LogLevel level, LogFunction logFunction);
 
+		void showThreadId(bool enabled = true);
+
 		void print(const QString& msg);
 		void print(const QString& msg, LogLevel level);
 		void print(const QString& msg, LogType type);
@@ -47,8 +50,11 @@ namespace logger
 		void printError(const QString& msg, LogType type, LogLevel level, const QString& functionStr);
 
 		void printStartFunction(const QString& functionStr);
+		void printStartFunction(const QString& functionStr, LogLevel level);
 		void printStartFunction(LogType type, LogLevel level, const QString& functionStr);
+
 		void printEndFunction(const QString& functionStr);
+		void printEndFunction(const QString& functionStr, LogLevel level);
 		void printEndFunction(LogType type, LogLevel level, const QString& functionStr);
 
 	private:
@@ -59,6 +65,7 @@ namespace logger
 		LogType mType{ VIEW };
 		LogLevel mLevel{ LOW };
 		LogFunction isLogFunction{ NO };
+		bool isShowThreadId{ false };
 	};
 
 } // namespace logger

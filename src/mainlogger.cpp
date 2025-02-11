@@ -8,17 +8,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
 QString MainLogger::mFileName;
 QString MainLogger::mFileNameDebug;
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
+    
     QTime time = QTime::currentTime();
     QString formattedTime = time.toString("hh:mm:ss.zzz");
     QByteArray formattedTimeMsg = formattedTime.toLocal8Bit();
 
-    QByteArray msgData = formattedTimeMsg + (" " + msg + "\r\n").toStdString().c_str();
+    QByteArray msgData = ("[" + formattedTimeMsg + "]" + msg + "\r\n").toStdString().c_str();
     if(!MainLogger::mFileName.isEmpty())
     {
         QFile file(MainLogger::mFileName);
@@ -28,7 +28,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
         }
         file.close();
     }
-
+   
     #ifdef _WIN32
     fprintf(stderr, "%s", msgData.constData());
     fflush(stderr);
@@ -41,5 +41,9 @@ void MainLogger::start(QString& fileName, QString& fileNameDebug)
 {
     MainLogger::mFileName = fileName;
     MainLogger::mFileNameDebug = fileNameDebug;
+    
+    //QString messagePattern = QStringLiteral("%{message}");
+    //messagePattern.prepend(QStringLiteral("[%{time hh:mm:ss.zzz}][%{threadid}]"));
+    //qSetMessagePattern(messagePattern);
     qInstallMessageHandler(myMessageOutput); // Install the handler
 }
