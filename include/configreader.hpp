@@ -8,18 +8,18 @@
 
 namespace logger
 {
-	class Logger;
+    class Logger;
 }
 
 class ConfigReader : public QObject
 {
-	public:
-		ConfigReader();
-		~ConfigReader();
-		bool readConfig(const QString& configPathWithName, QJsonObject& obj);
-		bool readConfig(const QString& configPathWithName, QJsonArray& obj);
+    public:
+        ConfigReader();
+        ~ConfigReader();
+        bool readConfig(const QString& configPathWithName, QJsonObject& obj);
+        bool readConfig(const QString& configPathWithName, QJsonArray& obj);
 
-	private:
-		std::unique_ptr<logger::Logger> mLogger;
+    private:
+        std::unique_ptr<logger::Logger> mLogger;
 
 };

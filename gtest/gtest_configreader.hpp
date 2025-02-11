@@ -11,12 +11,12 @@ using ::testing::AtLeast;
 
 namespace gtest_configreader
 {
-	class GTest_configreader : public ::testing::Test
-	{
-		protected:
-			GTest_configreader(){}
-			~GTest_configreader() override {}
-			void SetUp() override{}
-			void TearDown() override {}
-	};
+    class GTest_configreader : public ::testing::Test
+    {
+        protected:
+            GTest_configreader(){}
+            ~GTest_configreader() override {}
+            void SetUp() override{}
+            void TearDown() override {}
+    };
 }  // namespace gtest_configreader
