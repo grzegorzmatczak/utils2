@@ -14,8 +14,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}")
-
 
 if (WIN32)
     set(QT5_PATH  "D:\\Qt5\\5.15.2\\msvc2019_64")
@@ -24,16 +22,11 @@ endif (WIN32)
 
 find_package(Qt5 COMPONENTS Core REQUIRED)
 
-
 include_directories( "src" )
 include_directories( "include" )
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Test REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5OpenGL)
 
 set(SRC_LOGGING
 src/logger.cpp
@@ -42,19 +35,34 @@ src/mainlogger.cpp
 src/configreader.cpp
 )
 
-
 set(HEADERS_LOGGING
 include/logger.hpp
 include/mainlogger.hpp
 include/configreader.hpp
 )
+
+set(SRC_HEADERS_TEST
+	gtest/gtest.cpp
+	gtest/gtest_logger.cpp
+	gtest/gtest_logger.hpp
+    gtest/gtest_configreader.cpp
+    gtest/gtest_configreader.hpp
+    gtest/gtest_mainlogger.cpp
+    gtest/gtest_mainlogger.hpp
+)
+
+macro(copy_json jsonname)
+	configure_file(${jsonname} ${CMAKE_CONFIGURATION_TYPES}/${jsonname})
+endmacro()
+MESSAGE(STATUS "utils2 CMAKE_CONFIGURATION_TYPES ${CMAKE_CONFIGURATION_TYPES}")
+copy_json("gtest/test.json")
+
 include(GNUInstallDirs)
 
 add_library(${PROJECT_NAME}_lib STATIC
     ${SRC_LOGGING} ${HEADERS_LOGGING})
 
-
-target_link_libraries(${PROJECT_NAME}_lib Qt::Core Qt::Widgets Threads::Threads)
+target_link_libraries(${PROJECT_NAME}_lib Qt::Core Threads::Threads)
 
 install(TARGETS ${PROJECT_NAME}_lib
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -69,3 +77,7 @@ install(TARGETS ${PROJECT_NAME}_lib EXPORT ${PROJECT_NAME}Config
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "CMAKE_INSTALL_LIBDIR: ${CMAKE_INSTALL_LIBDIR}")
 MESSAGE(STATUS "CMAKE_INSTALL_BINDIR: ${CMAKE_INSTALL_BINDIR}")
+
+add_executable(g_test ${SRC_HEADERS_TEST})
+target_link_libraries(g_test ${PROJECT_NAME}_lib gtest gmock)
+

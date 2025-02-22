@@ -41,6 +41,11 @@ void Logger::print(const QString& msg, const QString& functionStr)
     print(msg, mType, mLevel, functionStr);
 }
 
+void Logger::print(const QString& msg, LogLevel level, const QString& functionStr)
+{
+    print(msg, mType, level, functionStr);
+}
+
 void Logger::print(const QString& msg, LogType type, LogLevel level)
 {
     if(level <= mLevel)
@@ -133,7 +138,16 @@ QString Logger::fromType(LogType type)
             return "CAMERA_CAPTURE";
         case LogType::SERVICE:
             return "SERVICE";
-        
+        case LogType::CAMERA_THREAD:
+            return "CAMERA_THREAD";
+        case LogType::FRAME_PROCESSING:
+            return "FRAME_PROCESSING";
+        case LogType::FRAME_MEDIAN:
+            return "FRAME_MEDIAN";
+        case LogType::FRAME_SOURCE:
+            return "FRAME_SOURCE";
+        case LogType::FRAME_READER:
+            return "FRAME_READER";
         default:
             return "";
     }

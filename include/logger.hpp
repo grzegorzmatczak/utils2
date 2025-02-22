@@ -12,6 +12,11 @@ namespace logger
         PAINTER,
         PAINTER_SETTINGS,
         CAMERA_CAPTURE,
+        CAMERA_THREAD,
+        FRAME_PROCESSING,
+        FRAME_MEDIAN,
+        FRAME_SOURCE,
+        FRAME_READER,
         SERVICE
     };
 
@@ -41,6 +46,7 @@ namespace logger
         void print(const QString& msg, LogLevel level);
         void print(const QString& msg, LogType type);
         void print(const QString& msg, const QString& functionStr);
+        void print(const QString& msg, LogLevel level, const QString& functionStr);
         void print(const QString& msg, LogType type, LogLevel level);
         void print(const QString& msg, LogType type, LogLevel level, const QString& functionStr);
 

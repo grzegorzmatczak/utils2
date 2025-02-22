@@ -13,7 +13,6 @@ QString MainLogger::mFileNameDebug;
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    
     QTime time = QTime::currentTime();
     QString formattedTime = time.toString("hh:mm:ss.zzz");
     QByteArray formattedTimeMsg = formattedTime.toLocal8Bit();
