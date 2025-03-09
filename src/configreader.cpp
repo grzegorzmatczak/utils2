@@ -9,6 +9,13 @@ ConfigReader::ConfigReader()
 
 ConfigReader::~ConfigReader() {}
 
+QJsonObject ConfigReader::readObjectConfig(const QString& configPathWithName)
+{
+    QJsonObject obj;
+    readConfig(configPathWithName, obj);
+    return obj;
+}
+
 bool ConfigReader::readConfig(const QString& configPathWithName, QJsonObject& obj) 
 {
     mLogger->print(configPathWithName, logger::LogType::CONFIG, logger::LogLevel::LOW, __FUNCTION__);
@@ -32,6 +39,13 @@ bool ConfigReader::readConfig(const QString& configPathWithName, QJsonObject& ob
     obj = { jConfigDoc.object() };
 
     return true;
+}
+
+QJsonArray ConfigReader::readArrayConfig(const QString& configPathWithName)
+{
+    QJsonArray arr;
+    readConfig(configPathWithName, arr);
+    return arr;
 }
 
 bool ConfigReader::readConfig(const QString& configPathWithName, QJsonArray& obj) 

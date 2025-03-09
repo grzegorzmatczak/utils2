@@ -148,6 +148,9 @@ QString Logger::fromType(LogType type)
             return "FRAME_SOURCE";
         case LogType::FRAME_READER:
             return "FRAME_READER";
+        case LogType::PROCESSING:
+            return "PROCESSING";
+            
         default:
             return "";
     }

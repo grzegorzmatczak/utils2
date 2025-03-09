@@ -17,7 +17,9 @@ namespace logger
         FRAME_MEDIAN,
         FRAME_SOURCE,
         FRAME_READER,
-        SERVICE
+        SERVICE,
+        PROCESSING,
+        GRAPH
     };
 
     enum LogLevel

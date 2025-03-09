@@ -51,18 +51,21 @@ set(SRC_HEADERS_TEST
     gtest/gtest_mainlogger.hpp
 )
 
+
 macro(copy_json jsonname)
 	configure_file(${jsonname} ${CMAKE_CONFIGURATION_TYPES}/${jsonname})
 endmacro()
 MESSAGE(STATUS "utils2 CMAKE_CONFIGURATION_TYPES ${CMAKE_CONFIGURATION_TYPES}")
 copy_json("gtest/test.json")
 
-include(GNUInstallDirs)
-
 add_library(${PROJECT_NAME}_lib STATIC
     ${SRC_LOGGING} ${HEADERS_LOGGING})
 
-target_link_libraries(${PROJECT_NAME}_lib Qt::Core Threads::Threads)
+target_link_libraries(${PROJECT_NAME}_lib 
+processing_module_lib
+Qt::Core 
+Threads::Threads
+)
 
 install(TARGETS ${PROJECT_NAME}_lib
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -78,6 +81,7 @@ MESSAGE(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "CMAKE_INSTALL_LIBDIR: ${CMAKE_INSTALL_LIBDIR}")
 MESSAGE(STATUS "CMAKE_INSTALL_BINDIR: ${CMAKE_INSTALL_BINDIR}")
 
-add_executable(g_test ${SRC_HEADERS_TEST})
-target_link_libraries(g_test ${PROJECT_NAME}_lib gtest gmock)
+add_executable(${PROJECT_NAME}_test ${SRC_HEADERS_TEST})
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib gtest gmock)
 
+#gtest_discover_tests(${PROJECT_NAME}_test)

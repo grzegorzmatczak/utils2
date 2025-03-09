@@ -18,6 +18,8 @@ class ConfigReader : public QObject
         ~ConfigReader();
         bool readConfig(const QString& configPathWithName, QJsonObject& obj);
         bool readConfig(const QString& configPathWithName, QJsonArray& obj);
+        QJsonObject readObjectConfig(const QString& configPathWithName);
+        QJsonArray readArrayConfig(const QString& configPathWithName);
 
     private:
         std::unique_ptr<logger::Logger> mLogger;
