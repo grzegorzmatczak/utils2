@@ -1,8 +1,6 @@
 #pragma once
-
-#include <QString>
-
-class MainLogger
+#include "global.h"
+class UTILS2_SHARED MainLogger
 {
     public:
         static void start(QString& fileName = QString("log.log"), QString& fileNameDebug = QString("logD.log"));

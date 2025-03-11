@@ -3,22 +3,14 @@ project(utils2  VERSION 0.0  DESCRIPTION "utils2 Windows/Linux"  LANGUAGES C CXX
 
 set(TARGET_NAME "utils2")
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+include(GNUInstallDirs)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS_COMMON}")
-if (UNIX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -lX11 -Wall" )
-endif (UNIX)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILE_OPTIONS}")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-
-
-if (WIN32)
-    set(QT5_PATH  "D:\\Qt5\\5.15.2\\msvc2019_64")
-    list(APPEND CMAKE_PREFIX_PATH ${QT5_PATH})
-endif (WIN32)
 
 find_package(Qt5 COMPONENTS Core REQUIRED)
 
@@ -53,35 +45,67 @@ set(SRC_HEADERS_TEST
 
 
 macro(copy_json jsonname)
-	configure_file(${jsonname} ${CMAKE_CONFIGURATION_TYPES}/${jsonname})
+	configure_file(${jsonname} ${CMAKE_BUILD_TYPE}/${jsonname})
 endmacro()
-MESSAGE(STATUS "utils2 CMAKE_CONFIGURATION_TYPES ${CMAKE_CONFIGURATION_TYPES}")
+MESSAGE(STATUS "utils2 CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE}")
 copy_json("gtest/test.json")
 
-add_library(${PROJECT_NAME}_lib STATIC
-    ${SRC_LOGGING} ${HEADERS_LOGGING})
 
-target_link_libraries(${PROJECT_NAME}_lib 
-processing_module_lib
-Qt::Core 
-Threads::Threads
-)
+add_library(${PROJECT_NAME} SHARED ${SRC_LOGGING} ${HEADERS_LOGGING})
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
-install(TARGETS ${PROJECT_NAME}_lib
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt::Core)
+target_compile_definitions(${PROJECT_NAME} PRIVATE UTILS2_SHARED)
+
+target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_include_directories(${PROJECT_NAME} PRIVATE src)
+
+#install(TARGETS ${PROJECT_NAME}
+#    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ #   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
     
-install(TARGETS ${PROJECT_NAME}_lib EXPORT ${PROJECT_NAME}Config
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+#install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
+#    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+#)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "CMAKE_INSTALL_LIBDIR: ${CMAKE_INSTALL_LIBDIR}")
 MESSAGE(STATUS "CMAKE_INSTALL_BINDIR: ${CMAKE_INSTALL_BINDIR}")
 
-add_executable(${PROJECT_NAME}_test ${SRC_HEADERS_TEST})
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib gtest gmock)
+#add_executable(${PROJECT_NAME}_test ${SRC_HEADERS_TEST})
+#target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} gtest gmock Qt::Core)
 
 #gtest_discover_tests(${PROJECT_NAME}_test)
+
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+    CACHE PATH "Location of header files" )
+set(SYSCONFIG_INSTALL_DIR ${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME}
+    CACHE PATH "Location of configuration files" )
+
+install( 
+  TARGETS ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}Targets
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  )
+
+install(
+  EXPORT ${PROJECT_NAME}Targets
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+  #NAMESPACE utils2::
+  FILE ${PROJECT_NAME}Targets.cmake # Not sure if this is still needed
+  )
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(${PROJECT_NAME}Config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+  PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR)
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+  VERSION 0.0.1
+  COMPATIBILITY SameMajorVersion )
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+              ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME} )

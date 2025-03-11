@@ -1,17 +1,15 @@
 #pragma once
 
+#include "global.h"
 #include <stdio.h>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QFile>
-#include <QJsonDocument>
+
 
 namespace logger
 {
     class Logger;
 }
 
-class ConfigReader : public QObject
+class UTILS2_SHARED ConfigReader : public QObject
 {
     public:
         ConfigReader();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QString>
+#include "global.h"
 
 namespace logger
 {
@@ -36,7 +36,7 @@ namespace logger
         NO
     };
 
-    class Logger
+    class UTILS2_SHARED Logger
     {
     public:
         Logger();
