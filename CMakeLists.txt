@@ -4,7 +4,6 @@ project(utils2
     DESCRIPTION "utils2" 
     LANGUAGES C CXX
 )
-
 set(TARGET_NAME "utils2")
 
 include(GNUInstallDirs)
@@ -12,27 +11,18 @@ include(GNUInstallDirs)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS_COMMON}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILE_OPTIONS}")
 list(APPEND CMAKE_PREFIX_PATH ${Qt5_DIR})
-if (MSVC)
-    #set(CMAKE_CXX_FLAGS_DEBUG "/MD ")
-    #set(CMAKE_CXX_FLAGS_RELEASE "/MT  ")
-endif()
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 COMPONENTS Core REQUIRED)
-#add_subdirectory(googletest)
-#set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
 include_directories( "src" )
 include_directories( "include" )
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-
-#list(APPEND CMAKE_PREFIX_PATH ${GTest_DIR})
-#find_package(GTest CONFIG REQUIRED)
-
 
 set(SRC
     src/logger.cpp
@@ -70,20 +60,10 @@ add_library(${PROJECT_NAME} SHARED ${SRC} ${HEADERS})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt::Core)
-target_compile_definitions(${PROJECT_NAME} PRIVATE UTILS2_SHARED)
+target_compile_definitions(${PROJECT_NAME} PRIVATE UTILS2_SHARED_ON)
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_include_directories(${PROJECT_NAME} PRIVATE src)
-
-#install(TARGETS ${PROJECT_NAME}
-#    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
- #   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-    
-#install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
-#    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-#)
 
 MESSAGE(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "CMAKE_INSTALL_LIBDIR: ${CMAKE_INSTALL_LIBDIR}")
@@ -91,8 +71,6 @@ MESSAGE(STATUS "CMAKE_INSTALL_BINDIR: ${CMAKE_INSTALL_BINDIR}")
 
 #add_executable(${PROJECT_NAME}_test ${SRC_HEADERS_TEST})
 #target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} GTest::gtest Qt::Core)
-
-#gtest_discover_tests(${PROJECT_NAME}_test)
 
 set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
     CACHE PATH "Location of header files" )
@@ -124,8 +102,7 @@ write_basic_package_version_file(
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
               ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME} )
-
-        
+   
 if (WIN32)
     get_target_property(QMAKE_EXE Qt5::qmake IMPORTED_LOCATION)
     get_filename_component(QT_BIN_DIR "${QMAKE_EXE}" DIRECTORY)

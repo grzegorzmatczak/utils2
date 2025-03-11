@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
 QString MainLogger::mFileName;
 QString MainLogger::mFileNameDebug;
 
