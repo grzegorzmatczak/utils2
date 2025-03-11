@@ -1,5 +1,7 @@
 #pragma once
-#include "global.h"
+
+#include "utils2_global.h"
+
 class UTILS2_SHARED MainLogger
 {
     public:
@@ -8,5 +10,4 @@ class UTILS2_SHARED MainLogger
     private:
         static QString mFileName;
         static QString mFileNameDebug;
-
 };

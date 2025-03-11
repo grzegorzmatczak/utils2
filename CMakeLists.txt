@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
-project(utils2  VERSION 0.0  DESCRIPTION "utils2 Windows/Linux"  LANGUAGES C CXX)
+project(utils2 
+    VERSION 0.0.1
+    DESCRIPTION "utils2" 
+    LANGUAGES C CXX
+)
 
 set(TARGET_NAME "utils2")
 
@@ -7,30 +11,41 @@ include(GNUInstallDirs)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS_COMMON}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILE_OPTIONS}")
+list(APPEND CMAKE_PREFIX_PATH ${Qt5_DIR})
+if (MSVC)
+    #set(CMAKE_CXX_FLAGS_DEBUG "/MD ")
+    #set(CMAKE_CXX_FLAGS_RELEASE "/MT  ")
+endif()
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 COMPONENTS Core REQUIRED)
-
+#add_subdirectory(googletest)
+#set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 include_directories( "src" )
 include_directories( "include" )
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-set(SRC_LOGGING
-src/logger.cpp
-src/mainlogger.cpp
-src/mainlogger.cpp
-src/configreader.cpp
+#list(APPEND CMAKE_PREFIX_PATH ${GTest_DIR})
+#find_package(GTest CONFIG REQUIRED)
+
+
+set(SRC
+    src/logger.cpp
+    src/mainlogger.cpp
+    src/mainlogger.cpp
+    src/configreader.cpp
 )
 
-set(HEADERS_LOGGING
-include/logger.hpp
-include/mainlogger.hpp
-include/configreader.hpp
+set(HEADERS
+    include/logger.hpp
+    include/mainlogger.hpp
+    include/configreader.hpp
+    include/utils2_global.h
 )
 
 set(SRC_HEADERS_TEST
@@ -51,7 +66,7 @@ MESSAGE(STATUS "utils2 CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE}")
 copy_json("gtest/test.json")
 
 
-add_library(${PROJECT_NAME} SHARED ${SRC_LOGGING} ${HEADERS_LOGGING})
+add_library(${PROJECT_NAME} SHARED ${SRC} ${HEADERS})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt::Core)
@@ -75,7 +90,7 @@ MESSAGE(STATUS "CMAKE_INSTALL_LIBDIR: ${CMAKE_INSTALL_LIBDIR}")
 MESSAGE(STATUS "CMAKE_INSTALL_BINDIR: ${CMAKE_INSTALL_BINDIR}")
 
 #add_executable(${PROJECT_NAME}_test ${SRC_HEADERS_TEST})
-#target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} gtest gmock Qt::Core)
+#target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} GTest::gtest Qt::Core)
 
 #gtest_discover_tests(${PROJECT_NAME}_test)
 
@@ -109,3 +124,34 @@ write_basic_package_version_file(
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
               ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME} )
+
+        
+if (WIN32)
+    get_target_property(QMAKE_EXE Qt5::qmake IMPORTED_LOCATION)
+    get_filename_component(QT_BIN_DIR "${QMAKE_EXE}" DIRECTORY)
+    message(STATUS "QT_BIN_DIR:" ${QT_BIN_DIR})
+    find_program(WINDEPLOYQT_ENV_SETUP qtenv2.bat HINTS "${QT_BIN_DIR}")
+    find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${QT_BIN_DIR}")
+endif(WIN32)
+
+if (WIN32_temp)
+    set(PREFIX_BUILD_TYPE "")
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+		set(PREFIX_BUILD_TYPE "d")
+    endif()
+    message(STATUS "OPENCV_VERSION_WINDOWS:" ${OPENCV_VERSION_WINDOWS})
+    message(STATUS "CMAKE_CURRENT_BINARY_DIR:" ${CMAKE_CURRENT_BINARY_DIR})
+    message(STATUS "PREFIX_BUILD_TYPE:" ${PREFIX_BUILD_TYPE})
+    message(STATUS "CMAKE_BINARY_DIR:" ${CMAKE_BINARY_DIR})
+    
+    MESSAGE(STATUS "utils2_DIR ${utils2_DIR}")
+    add_custom_command ( TARGET ${PROJECT_NAME}_test
+        ##COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${utils2_DIR}utils2.dll                              ${utils2_DIR}
+
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT_BIN_DIR}/Qt5Test${PREFIX_BUILD_TYPE}.dll        ${utils2_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT_BIN_DIR}/Qt5Gui${PREFIX_BUILD_TYPE}.dll         ${utils2_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT_BIN_DIR}/Qt5Multimedia${PREFIX_BUILD_TYPE}.dll  ${utils2_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT_BIN_DIR}/Qt5Network${PREFIX_BUILD_TYPE}.dll     ${utils2_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT_BIN_DIR}/Qt5Core${PREFIX_BUILD_TYPE}.dll        ${utils2_DIR}
+    )
+endif(WIN32_temp)

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "global.h"
-#include <stdio.h>
+#include "utils2_global.h"
 
+#include <stdio.h>
 
 namespace logger
 {
