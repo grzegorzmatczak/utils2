@@ -23,10 +23,7 @@
             "OpenCV_DIR": "D:/repo/opencv-4.10.0-build",
             "OPENCV_VERSION_WINDOWS": "4100",
             "CMAKE_BUILD_TYPE": "Debug",
-            "CUSTOM_INSTALL_PREFIX": "D:/repo/TensorTracker/install/windows-base",
-            "utils2_DIR": "${sourceDir}/out/build/${presetName}/Debug/"
-
-
+            "CUSTOM_INSTALL_PREFIX": "D:/repo/TensorTracker/install/windows-base"
         }
     },
     {
@@ -51,8 +48,7 @@
             "OpenCV_DIR": "D:/repo/opencv-4.10.0-build",
             "OPENCV_VERSION_WINDOWS": "4100",
             "CMAKE_BUILD_TYPE": "Release",
-            "CUSTOM_INSTALL_PREFIX": "D:/repo/TensorTracker/install/windows-base",
-            "utils2_DIR": "${sourceDir}/out/build/${presetName}/Release/"
+            "CUSTOM_INSTALL_PREFIX": "D:/repo/TensorTracker/install/windows-base"
         }
     }
   ]
