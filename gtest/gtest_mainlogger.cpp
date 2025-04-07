@@ -1,5 +1,7 @@
 #include "gtest_mainlogger.hpp"
 
+#include <QDebug>
+
 #include "mainlogger.hpp"
 
 using ::testing::AtLeast;

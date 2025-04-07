@@ -31,7 +31,7 @@ void Logger::print(const QString& msg, LogType type)
     print(msg, type, mLevel);
 }
 
-void Logger::print(const QString& msg, LogLevel level)
+void Logger::print(const QString& msg, const LogLevel level)
 {
     print(msg, mType, level);
 }
@@ -41,18 +41,18 @@ void Logger::print(const QString& msg, const QString& functionStr)
     print(msg, mType, mLevel, functionStr);
 }
 
-void Logger::print(const QString& msg, LogLevel level, const QString& functionStr)
+void Logger::print(const QString& msg, const LogLevel level, const QString& functionStr)
 {
     print(msg, mType, level, functionStr);
 }
 
-void Logger::print(const QString& msg, LogType type, LogLevel level)
+void Logger::print(const QString& msg, LogType type, const LogLevel level)
 {
     if(level <= mLevel)
         qDebug("[%s] %s", qPrintable(fromType(type)), qPrintable(msg));
 }
 
-void Logger::print(const QString& msg, LogType type, LogLevel level, const QString& functionStr)
+void Logger::print(const QString& msg, LogType type, const LogLevel level, const QString& functionStr)
 {
     if(isLogFunction == LogFunction::YES && level <= mLevel)
         qDebug("[%s][%s()] %s", qPrintable(fromType(type)), qPrintable(functionStr), qPrintable(msg));
@@ -62,26 +62,26 @@ void Logger::print(const QString& msg, LogType type, LogLevel level, const QStri
 
 void Logger::printError(const QString& msg)
 {
-    printError(msg, mType, mLevel);
+    printError(msg, mLevel);
 }
 
 void Logger::printError(const QString& msg, const QString& functionStr)
 {
-    printError(msg, mType, mLevel, functionStr);
+    printError(msg, mLevel, functionStr);
 }
 
-void Logger::printError(const QString& msg, LogType type, LogLevel level)
+void Logger::printError(const QString& msg, const LogLevel level)
 {
     if(level <= mLevel)
-        qCritical("\033[1;31m[%s] %s\033[0m", qPrintable(fromType(type)), qPrintable(msg));
+        qDebug("\033[1;31m[%s] %s\033[0m", qPrintable(fromType(mType)), qPrintable(msg));
 }
 
-void Logger::printError(const QString& msg, LogType type, LogLevel level, const QString& functionStr)
+void Logger::printError(const QString& msg, const LogLevel level, const QString& functionStr)
 {
     if(isLogFunction == LogFunction::YES && level <= mLevel)
-        qCritical("\033[1;31m[%s][%s()] %s\033[0m", qPrintable(fromType(type)), qPrintable(functionStr), qPrintable(msg));
+        qCritical("\033[1;31m[%s][%s()] %s\033[0m", qPrintable(fromType(mType)), qPrintable(functionStr), qPrintable(msg));
     else if(level <= mLevel)
-        qCritical("\033[1;31m[%s] %s\033[0m", qPrintable(fromType(type)), qPrintable(msg));
+        qCritical("\033[1;31m[%s] %s\033[0m", qPrintable(fromType(mType)), qPrintable(msg));
 }
 
 void Logger::printStartFunction(const QString& functionStr)
@@ -89,12 +89,12 @@ void Logger::printStartFunction(const QString& functionStr)
     printStartFunction(mType, mLevel, functionStr);
 }
 
-void Logger::printStartFunction(const QString& functionStr, LogLevel level)
+void Logger::printStartFunction(const LogLevel level, const QString& functionStr)
 {
     printStartFunction(mType, level, functionStr);
 }
 
-void Logger::printStartFunction(LogType type, LogLevel level, const QString& functionStr)
+void Logger::printStartFunction(LogType type, const LogLevel level, const QString& functionStr)
 {
     if (isLogFunction == LogFunction::YES && level <= mLevel && isShowThreadId == true)
         qDebug() << QString("[%1][").arg(qPrintable(fromType(type))) << QThread::currentThreadId() << QString("][%1()]").arg(qPrintable(functionStr));
@@ -109,12 +109,12 @@ void Logger::printEndFunction(const QString& functionStr)
     printEndFunction(mType, mLevel, functionStr);
 }
 
-void Logger::printEndFunction(const QString& functionStr, LogLevel level)
+void Logger::printEndFunction(const LogLevel level, const QString& functionStr)
 {
     printEndFunction(mType, level, functionStr);
 }
 
-void Logger::printEndFunction(LogType type, LogLevel level, const QString& functionStr)
+void Logger::printEndFunction(LogType type, const LogLevel level, const QString& functionStr)
 {
     if (isLogFunction == LogFunction::YES && level <= mLevel && isShowThreadId == true)
         qDebug() << QString("[%1][").arg(qPrintable(fromType(type))) << QThread::currentThreadId() << QString("][%1()] done").arg(qPrintable(functionStr));

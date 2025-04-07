@@ -1,5 +1,7 @@
 #include "gtest_logger.hpp"
 
+#include <QDebug>
+
 #include "logger.hpp"
 #include "mainlogger.hpp"
 
@@ -16,8 +18,8 @@ namespace gtest_logger
         logger.print(QString("test Logger"));
         QString str = QString("test Logger");
         logger.print(str);
+        logger.printError("error");
         logger.print(str, logger::LogType::VIEW);
-
         logger::Logger logger2(logger::LogType::VIEW, logger::LogLevel::NO_LOGS, logger::LogFunction::YES);
         logger2.printStartFunction(__FUNCTION__);
         logger2.printEndFunction(__FUNCTION__);

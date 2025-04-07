@@ -1,10 +1,6 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h" 
 
-#include <QDebug>
-
-
-
 using ::testing::AtLeast;
 
 namespace gtest_logger

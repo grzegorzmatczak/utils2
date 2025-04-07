@@ -45,25 +45,25 @@ namespace logger
         void showThreadId(bool enabled = true);
 
         void print(const QString& msg);
-        void print(const QString& msg, LogLevel level);
+        void print(const QString& msg, const LogLevel level);
         void print(const QString& msg, LogType type);
         void print(const QString& msg, const QString& functionStr);
-        void print(const QString& msg, LogLevel level, const QString& functionStr);
-        void print(const QString& msg, LogType type, LogLevel level);
-        void print(const QString& msg, LogType type, LogLevel level, const QString& functionStr);
+        void print(const QString& msg, const LogLevel level, const QString& functionStr);
+        void print(const QString& msg, LogType type, const LogLevel level);
+        void print(const QString& msg, LogType type, const LogLevel level, const QString& functionStr);
 
         void printError(const QString& msg);
         void printError(const QString& msg, const QString& functionStr);
-        void printError(const QString& msg, LogType type, LogLevel level);
-        void printError(const QString& msg, LogType type, LogLevel level, const QString& functionStr);
+        void printError(const QString& msg, const LogLevel level);
+        void printError(const QString& msg, const LogLevel level, const QString& functionStr);
 
         void printStartFunction(const QString& functionStr);
-        void printStartFunction(const QString& functionStr, LogLevel level);
+        void printStartFunction(const LogLevel level, const QString& functionStr);
         void printStartFunction(LogType type, LogLevel level, const QString& functionStr);
 
         void printEndFunction(const QString& functionStr);
-        void printEndFunction(const QString& functionStr, LogLevel level);
-        void printEndFunction(LogType type, LogLevel level, const QString& functionStr);
+        void printEndFunction(const LogLevel level, const QString& functionStr);
+        void printEndFunction(LogType type, const LogLevel level, const QString& functionStr);
 
     private:
         QString fromType(LogType type);
